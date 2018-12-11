@@ -47,13 +47,14 @@ func main() {
 			continue
 		}
 		if retired {
-			fmt.Println("Retired host:", host.ID)
-			if !dryRun {
-				fmt.Println(dryRun)
-				//if err := mc.client.RetireHost(host.ID); err != nil {
-				//	fmt.Println(err)
-				//	continue
-				//}
+			if dryRun {
+				fmt.Println("[DRY RUN] Retired host:", host.ID)
+			} else {
+				if err := mc.client.RetireHost(host.ID); err != nil {
+					fmt.Println(err)
+					continue
+				}
+				fmt.Println("Retired host:", host.ID)
 			}
 		}
 	}
