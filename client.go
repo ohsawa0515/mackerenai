@@ -9,6 +9,7 @@ import (
 const (
 	defaultRetireDecisionPeriodHour = "24" // Default: 24 hours
 	ec2CpuUsageMetricName           = "custom.ec2.cpu.used"
+	gceCpuUsageMetricName           = "cpu.user.percentage" // Since there is no GCE specific metrics, I use normal CPU metrics.
 	rdsCpuUsageMetricName           = "custom.rds.cpu.used"
 	redShiftCpuUsageMetricName      = "custom.redshift.cpu.used"
 	elastiCacheCpuUsageMetricName   = "custom.elasticache.cpu.used"
@@ -46,6 +47,8 @@ func (mc *MackerelClient) IsRetired(hostId string) (bool, error) {
 	switch h.Meta.Cloud.Provider {
 	case "ec2":
 		met = ec2CpuUsageMetricName
+	case "gce":
+		met = gceCpuUsageMetricName
 	case "rds":
 		met = rdsCpuUsageMetricName
 	case "redshift":
