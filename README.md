@@ -21,6 +21,14 @@ SAM CLI, version 0.8.1
 
 # deploy using AWS SAM
 $ ./bin/deploy
+
+# Install in Tokyo, the period is 12 hours, dry run is false (actually delete), delete every day at 7:00pm UTC.
+$ MACKEREL_API_KEY="xxxxx" \
+  RETIRE_DECISION_PERIOD_HOUR=12 \
+  RETIRE_DRY_RUN=false \
+  SCHEDULE="cron(0 19 * * ? *)" \
+  REGION=ap-northeast-1 \
+  ./bin/deploy.sh
 ```
 
 # Options
@@ -38,16 +46,6 @@ The default is `24` (hours), unit is `Hour`.
 
 Dry run. If it is true, it is not actually deleted.  
 The default is `true`.
-
-```bash
-# Install in Tokyo, the period is 12 hours, dry run is false (actually delete), delete every day at 7:00pm UTC.
-$ MACKEREL_API_KEY="xxxxx" \
-  RETIRE_DECISION_PERIOD_HOUR=12 \
-  RETIRE_DRY_RUN=false \
-  SCHEDULE="cron(0 19 * * ? *)" \
-  REGION=ap-northeast-1 \
-  ./bin/deploy.sh
-```
 
 # Contribution
 
