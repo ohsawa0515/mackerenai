@@ -1,0 +1,40 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Automatically delete unused hosts from Mackerel.
+Parameters:
+  MackerelApiKey:
+    Type: String
+  RetireDecisionPeriodHour:
+    Type: String
+    Default: "24"
+  RetireDryRun:
+    Type: String
+    Default: "true"
+  Schedule:
+    Type: String
+    Default: rate(1 day)
+
+Resources:
+  Mackerenai:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: Automatically delete unused hosts from Mackerel.
+      Handler: mackerenai
+      Runtime: go1.x
+      CodeUri: ./artifact
+      Timeout: 300
+      Environment:
+        Variables:
+          MACKEREL_API_KEY: !Ref MackerelApiKey
+          RETIRE_DECISION_PERIOD_HOUR: !Ref RetireDecisionPeriodHour
+          RETIRE_DRY_RUN: !Ref RetireDryRun
+      Events:
+        Schedule:
+          Type: Schedule
+          Properties:
+            Schedule: !Ref Schedule
+  MackerenaiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${Mackerenai}
+      RetentionInDays: 1
