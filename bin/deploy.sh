@@ -2,7 +2,7 @@
 
 set -eu
 
-mackerelApiToken=${MACKEREL_API_TOKEN}
+mackerelApiKey=${MACKEREL_API_KEY}
 retireDecisionPeriodHour=${RETIRE_DECISION_PERIOD_HOUR:-24}
 retireDryRun=${RETIRE_DRY_RUN:-"true"}
 region=${REGION:-$(aws configure get region)}
@@ -25,7 +25,7 @@ aws --profile $profile cloudformation deploy \
   --template-file artifact/output.yaml \
   --stack-name MackerenaiSAM \
   --capabilities CAPABILITY_NAMED_IAM \
-  --parameter-overrides "MackerelApiToken=${mackerelApiToken}" "RetireDecisionPeriodHour=${retireDecisionPeriodHour}" "RetireDryRun=${retireDryRun}" \
+  --parameter-overrides "mackerelApiKey=${mackerelApiKey}" "RetireDecisionPeriodHour=${retireDecisionPeriodHour}" "RetireDryRun=${retireDryRun}" \
   --region $region
 
 # delete temporary s3 bucket

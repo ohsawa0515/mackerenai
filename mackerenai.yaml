@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: Automatically delete unused hosts from Mackerel.
 Parameters:
-  MackerelApiToken:
+  MackerelApiKey:
     Type: String
   RetireDecisionPeriodHour:
     Type: String
@@ -25,7 +25,7 @@ Resources:
       Timeout: 300
       Environment:
         Variables:
-          MACKEREL_API_TOKEN: !Ref MackerelApiToken
+          MACKEREL_API_KEY: !Ref MackerelApiKey
           RETIRE_DECISION_PERIOD_HOUR: !Ref RetireDecisionPeriodHour
           RETIRE_DRY_RUN: !Ref RetireDryRun
       Events:

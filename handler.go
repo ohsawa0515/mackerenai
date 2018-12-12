@@ -23,9 +23,9 @@ type Conf struct {
 
 // newConf -
 func newConf() (*Conf, error) {
-	apiKey, ok := os.LookupEnv("MACKEREL_API_TOKEN")
+	apiKey, ok := os.LookupEnv("MACKEREL_API_KEY")
 	if !ok {
-		return nil, errors.Errorf("set environment variable `MACKEREL_API_TOKEN`")
+		return nil, errors.Errorf("set environment variable `MACKEREL_API_KEY`")
 	}
 
 	r, ok := os.LookupEnv("RETIRE_DECISION_PERIOD_HOUR")
