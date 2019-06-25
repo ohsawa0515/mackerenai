@@ -9,6 +9,8 @@ import (
 const (
 	ec2CpuUsageMetricName         = "custom.ec2.cpu.used"
 	gceCpuUsageMetricName         = "cpu.user.percentage" // Since there is no GCE specific metrics, I use normal CPU metrics.
+	albRequestCountName           = "custom.alb.request.count"
+	elbRequestCountName           = "custom.elb.count.request_count"
 	rdsCpuUsageMetricName         = "custom.rds.cpu.used"
 	redShiftCpuUsageMetricName    = "custom.redshift.cpu.used"
 	elastiCacheCpuUsageMetricName = "custom.elasticache.cpu.used"
@@ -41,12 +43,17 @@ func (mc *MackerelClient) IsRetired(hostId string) (bool, error) {
 	if h.Meta.Cloud == nil {
 		return false, nil
 	}
+
 	var met string
 	switch h.Meta.Cloud.Provider {
 	case "ec2":
 		met = ec2CpuUsageMetricName
 	case "gce":
 		met = gceCpuUsageMetricName
+	case "alb":
+		met = albRequestCountName
+	case "elb":
+		met = elbRequestCountName
 	case "rds":
 		met = rdsCpuUsageMetricName
 	case "redshift":
@@ -65,7 +72,9 @@ func (mc *MackerelClient) IsRetired(hostId string) (bool, error) {
 	case *mackerel.APIError:
 		break
 	default:
-		return false, e
+		if e != nil {
+			return false, e
+		}
 	}
 	if len(values) == 0 {
 		return true, nil

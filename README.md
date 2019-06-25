@@ -47,6 +47,19 @@ The default is `24` (hours), unit is `Hour`.
 Dry run. If it is true, it is not actually deleted.  
 The default is `true`.
 
+# Run in local machine  
+
+If you run in local machine because you are developing for contribution, use `RUN_LOCAL` option.
+
+```console
+$ MACKEREL_API_KEY="xxxxx" \
+  REGION=ap-northeast-1 \
+  RETIRE_DECISION_PERIOD_HOUR=12 \
+  RETIRE_DRY_RUN=false \
+  RUN_LOCAL=true \
+  go run *.go
+``` 
+
 # Contribution
 
 1. Fork ([https://github.com/ohsawa0515/mackerenai/fork](https://github.com/ohsawa0515/mackerenai/fork))
