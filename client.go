@@ -41,7 +41,6 @@ func (mc *MackerelClient) IsRetired(hostId string) (bool, error) {
 	if h.Meta.Cloud == nil {
 		return false, nil
 	}
-
 	var met string
 	switch h.Meta.Cloud.Provider {
 	case "ec2":
@@ -60,8 +59,13 @@ func (mc *MackerelClient) IsRetired(hostId string) (bool, error) {
 
 	// If there are no metrics for the specified period, retire the host
 	values, err := mc.client.FetchHostMetricValues(hostId, met, mc.from, mc.to)
-	if err != nil {
-		return false, err
+
+	// If the host which have no metrics return API Error (API request failed: metric not found), it will be through.
+	switch e := err.(type) {
+	case *mackerel.APIError:
+		break
+	default:
+		return false, e
 	}
 	if len(values) == 0 {
 		return true, nil

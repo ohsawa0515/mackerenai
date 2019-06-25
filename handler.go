@@ -75,13 +75,13 @@ func handler() error {
 		}
 		if retired {
 			if conf.dryRun {
-				log.Println("[DRY RUN] Retired host:", host.ID)
+				log.Println("[DRY RUN] Retired host:", host.ID, "(", host.Name, ")")
 			} else {
 				if err := mc.client.RetireHost(host.ID); err != nil {
 					log.Println(err)
 					continue
 				}
-				log.Println("Retired host:", host.ID)
+				log.Println("Retired host:", host.ID, "(", host.Name, ")")
 			}
 		}
 	}
